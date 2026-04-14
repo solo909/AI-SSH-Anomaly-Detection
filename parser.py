@@ -1,18 +1,35 @@
 import pandas as pd
 import re
+from datetime import datetime
+
+PASSWORD_PATTERN = re.compile(
+    r'^(?P<timestamp>\w{3}\s+\d+\s+\d+:\d+:\d+)'
+    r'.*sshd\[\d+\]:\s+(?P<auth>Failed|Accepted) password for (?:invalid user )?(?P<user>\S+)'
+    r' from (?P<ip>\d+\.\d+\.\d+\.\d+)'
+)
+
+INVALID_USER_PATTERN = re.compile(
+    r'^(?P<timestamp>\w{3}\s+\d+\s+\d+:\d+:\d+)'
+    r'.*sshd\[\d+\]:\s+Invalid user (?P<user>\S+)'
+    r' from (?P<ip>\d+\.\d+\.\d+\.\d+)'
+)
 
 def parse_log(file_path):
     data = []
 
     with open(file_path, "r") as f:
         for line in f:
-            ip_match = re.search(r'\d+\.\d+\.\d+\.\d+', line)
+            m = PASSWORD_PATTERN.search(line)
+            if m:
+                timestamp = datetime.strptime(m.group("timestamp"), "%b %d %H:%M:%S").replace(year=datetime.now().year)
+                status = "success" if m.group("auth") == "Accepted" else "failed"
+                data.append([timestamp, m.group("ip"), m.group("user"), status])
+                continue
 
-            if ip_match:
-                ip = ip_match.group()
-                status = "failed" if "Failed" in line else "success"
+            m = INVALID_USER_PATTERN.search(line)
+            if m:
+                timestamp = datetime.strptime(m.group("timestamp"), "%b %d %H:%M:%S").replace(year=datetime.now().year)
+                data.append([timestamp, m.group("ip"), m.group("user"), "failed"])
 
-                data.append([ip, status])
-
-    df = pd.DataFrame(data, columns=["ip", "status"])
+    df = pd.DataFrame(data, columns=["timestamp", "ip", "user", "status"])
     return df
