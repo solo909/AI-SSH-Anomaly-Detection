@@ -2,7 +2,7 @@ from parser import parse_log
 from features import build_features
 from baseline import rule_based_detection
 
-file_path = "data/auth.log"
+file_path = "data/auth2.log"
 
 df = parse_log(file_path)
 print("RAW LOG DATA")
