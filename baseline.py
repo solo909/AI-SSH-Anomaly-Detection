@@ -1,6 +1,15 @@
+def rule_based_detection(
+    features_df,
+    fail_threshold=10,        # failed 10+ times
+    unique_user_threshold=5,  # tried 5+ different usernames
+    rate_threshold=5.0        # 5+ attempts per minute
+):
+    df = features_df.copy()
 
-def rule_based_detection(features_df, fail_threshold=2):                # If failed attmepts > or = 2 , flag as suspicious
-    features_df["rule_flag"] = features_df["failed_attempts"].apply(            # Creates new coll in features_df table to track rule_flag
-        lambda x: 1 if x >= fail_threshold else 0                           # Applying the flag rule
-    )
-    return features_df                                                  # Returns updated table
+    df["rule_flag"] = (
+        (df["failed_attempts"] >= fail_threshold)        |
+        (df["unique_users"]    >= unique_user_threshold) |
+        (df["attempt_rate"]    >= rate_threshold)
+    ).astype(int)
+
+    return df
