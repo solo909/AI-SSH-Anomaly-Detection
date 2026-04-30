@@ -24,4 +24,11 @@ if uploaded_file:
         st.subheader("Feature Data")
         st.write(featrues_df)                   # Displaying features
 
+        baseline_df = rule_based_detection(features_df) # Runs rule based detection
+
+        st.subheader("Baseline Results")
+
+        # Displaying only the flagged IPs based on the rule_flag == 1
+        st.write(baseline_df[baseline_df["rule_flag" == 1]])
+
         
