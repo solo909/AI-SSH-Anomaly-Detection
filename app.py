@@ -13,8 +13,8 @@ st.title("SSH Log Anomally Detection")
 uploaded_file = st.file_uploader("Upload auth.log", type=["log"])
 
 if uploaded_file:
-
-        df = parse_log(uploaded_file)           # Runs parse on uploaded file
+        # Reads uploaded files and turns content into lines to be parsed
+        df = parse_log(uploaded_file.read()decode("utf-8").splitlines())        
 
         st.subheader("Raw Log Data")            # Header
         st.write(df)                            # Displays raw parsed data
