@@ -27,7 +27,7 @@ if uploaded_file:
         baseline_df = rule_based_detection(features_df) # Runs rule based detection
         st.subheader("Baseline Results")
         # Displaying only the flagged IPs based on the rule_flag == 1
-        st.write(baseline_df[baseline_df["rule_flag" == 1]])
+        st.write(baseline_df[baseline_df["rule_flag"] == 1])
 
         if_df = run_isolation_forest(features_df)       # Runs IF detection
         st.subheader("Isolation Forest")
@@ -35,5 +35,5 @@ if uploaded_file:
 
         dbscan_df = run_dbscan(features_df)             # Runs DBSCAN detection
         st.subheader("DBSCAN")
-        st.write(dbscan_df[dbscan_df["db_flag"] == 1]) # Displays anomalies flagged by DBSCAN
+        st.write(dbscan_df[dbscan_df["dbscan_flag"] == 1]) # Displays anomalies flagged by DBSCAN
 
