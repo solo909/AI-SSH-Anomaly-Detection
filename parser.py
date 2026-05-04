@@ -16,6 +16,7 @@ INVALID_USER_PATTERN = re.compile(
 
 def parse_log(lines):
     data = []
+    skipped = 0
 
     for line in lines:
         m = PASSWORD_PATTERN.search(line)
@@ -30,5 +31,10 @@ def parse_log(lines):
             timestamp = datetime.strptime(m.group("timestamp"), "%b %d %H:%M:%S").replace(year=datetime.now().year)
             data.append([timestamp, m.group("ip"), m.group("user"), "failed"])
 
+        else:
+            skipped += 1
+
     df = pd.DataFrame(data, columns=["timestamp", "ip", "user", "status"])
+
+    print(f"[Parser] Parsed rows: {len(df)} | Skipped lines: {skipped}" )
     return df
