@@ -19,10 +19,10 @@ if uploaded_file:
         st.subheader("Raw Log Data")            # Header
         st.write(df)                            # Displays raw parsed data
 
-        featrues_df = build_features(df)        # Brings features together for display
+        features_df = build_features(df)        # Brings features together for display
 
         st.subheader("Feature Data")
-        st.write(featrues_df)                   # Displaying features
+        st.write(features_df)                   # Displaying features
 
         baseline_df = rule_based_detection(features_df) # Runs rule based detection
         st.subheader("Baseline Results")
@@ -35,5 +35,5 @@ if uploaded_file:
 
         dbscan_df = run_dbscan(features_df)             # Runs DBSCAN detection
         st.subheader("DBSCAN")
-        st.wrtite(dbscan_df[dbscan_df["db_flag"] == 1]) # Displays anomalies flagged by DBSCAN
+        st.write(dbscan_df[dbscan_df["db_flag"] == 1]) # Displays anomalies flagged by DBSCAN
 
