@@ -14,22 +14,21 @@ INVALID_USER_PATTERN = re.compile(
     r' from (?P<ip>\d+\.\d+\.\d+\.\d+)'
 )
 
-def parse_log(file_path):
+def parse_log(lines):
     data = []
 
-    with open(file_path, "r") as f:
-        for line in f:
-            m = PASSWORD_PATTERN.search(line)
-            if m:
-                timestamp = datetime.strptime(m.group("timestamp"), "%b %d %H:%M:%S").replace(year=datetime.now().year)
-                status = "success" if m.group("auth") == "Accepted" else "failed"
-                data.append([timestamp, m.group("ip"), m.group("user"), status])
-                continue
+    for line in lines:
+        m = PASSWORD_PATTERN.search(line)
+        if m:
+            timestamp = datetime.strptime(m.group("timestamp"), "%b %d %H:%M:%S").replace(year=datetime.now().year)
+            status = "success" if m.group("auth") == "Accepted" else "failed"
+            data.append([timestamp, m.group("ip"), m.group("user"), status])
+            continue
 
-            m = INVALID_USER_PATTERN.search(line)
-            if m:
-                timestamp = datetime.strptime(m.group("timestamp"), "%b %d %H:%M:%S").replace(year=datetime.now().year)
-                data.append([timestamp, m.group("ip"), m.group("user"), "failed"])
+        m = INVALID_USER_PATTERN.search(line)
+        if m:
+            timestamp = datetime.strptime(m.group("timestamp"), "%b %d %H:%M:%S").replace(year=datetime.now().year)
+            data.append([timestamp, m.group("ip"), m.group("user"), "failed"])
 
     df = pd.DataFrame(data, columns=["timestamp", "ip", "user", "status"])
     return df
