@@ -14,8 +14,7 @@ def build_features(df):
     ).dt.total_seconds()
 
     features["attempt_rate"] = features.apply(
-        lambda r: r["failed_attempts"] / r["duration_seconds"]
-        if r["duration_seconds"] > 0 else 0,
+        lambda r: r["failed_attempts"] / max(r["duration_seconds"], 60),
         axis=1
     )
 
