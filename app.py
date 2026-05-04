@@ -37,23 +37,23 @@ if uploaded_file:
         st.subheader("DBSCAN")
         st.write(dbscan_df[dbscan_df["dbscan_flag"] == 1]) # Displays anomalies flagged by DBSCAN
 
-# Combine all results into one table
-combined_df = baseline_df.copy()
-combined_df["if_flag"] = if_df["if_flag"]
-combined_df["dbscan_flag"] = dbscan_df["dbscan_flag"]
+        # Combine all results into one table
+        combined_df = baseline_df.copy()
+        combined_df["if_flag"] = if_df["if_flag"]
+        combined_df["dbscan_flag"] = dbscan_df["dbscan_flag"]
 
-# Agreement scoring
-combined_df["agreement"] = (
-    combined_df["rule_flag"] +
-    combined_df["if_flag"] +
-    combined_df["dbscan_flag"]
-)
+        # Agreement scoring
+        combined_df["agreement"] = (
+        combined_df["rule_flag"] +
+        combined_df["if_flag"] +
+        combined_df["dbscan_flag"]
+        )
 
-# Display results
-st.subheader("Agreement Analysis")
+        # Display results
+        st.subheader("Agreement Analysis")
 
-st.write("Strong Attacks (agreement = 3)")
-st.write(combined_df[combined_df["agreement"] == 3])
+        st.write("Strong Attacks (agreement = 3)")
+        st.write(combined_df[combined_df["agreement"] == 3])
 
-st.write("Likely Attacks (agreement = 2)")
-st.write(combined_df[combined_df["agreement"] == 2])
+        st.write("Likely Attacks (agreement = 2)")
+        st.write(combined_df[combined_df["agreement"] == 2])
