@@ -2,8 +2,8 @@ import pandas as pd
 
 
 def build_features(df):
-    features = df.groupby("ip").agg(
-        failed_attempts=("status", lambda x: (x == "failed").sum()),
+    features = df.groupby("ip").agg(                                # Grouped activity by IP
+        failed_attempts=("status", lambda x: (x == "failed").sum()),# Checking striclty attempts under the status of failed
         unique_users=("user", "nunique"),
         first_seen=("timestamp", "min"),
         last_seen=("timestamp", "max"),
