@@ -7,7 +7,7 @@ import matplotlib.pyplot as plt
 file_path = "data/auth2.log"
 
 with open(file_path) as f:
-   df = parse_log(f)
+   df = parse_log(f.readlines())
 print("RAW LOG DATA")
 print(df)
 print()
