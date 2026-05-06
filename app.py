@@ -52,7 +52,7 @@ if uploaded_file:
         # Display results
         st.subheader("Agreement Analysis")
 
-        st.write("Strong Attacks (agreement = 3)")
+        st.write("Strong Attacks (agreement = 3)") 
         st.write(combined_df[combined_df["agreement"] == 3])
 
         st.write("Likely Attacks (agreement = 2)")
