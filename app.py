@@ -1,6 +1,21 @@
 import streamlit as st
 import pandas as pd
 
+# Background GIF
+st.markdown(
+    """
+    <style>
+    .stApp {
+        background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)),
+                    url("https://media3.giphy.com/media/v1.Y2lkPTc5MGI3NjExeHZ3eGYxODJjbmI5bms4YXgxcTNlb3Nyeml4eG9ncXgzcGZ1ajZvdCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/QKDpE67Rc7rpjBmQPj/giphy.gif");
+        background-size: cover;
+        background-position: center;
+    }
+    </style>
+    """,
+    unsafe_allow_html=True
+)
+
 # Importing project functions
 from parser import parse_log
 from features import build_features
